@@ -82,7 +82,12 @@ public class MainActivity extends AppCompatActivity {
         FlipHorizontal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flipHorizontal();
+                flipHorizontal(x);
+                if(x==-1.0f){
+                    x=1.0f;
+                }else{
+                    x=-1.0f;
+                }
             }
         });
         Save.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +101,11 @@ public class MainActivity extends AppCompatActivity {
         Crop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+//                CropImage.activity(selectedImageUri)
+//                        .setGuidelines(CropImageView.Guidelines.ON)
+//                        .start(EditImageActivity.this);
+
 
             }
         });
@@ -116,9 +126,24 @@ public class MainActivity extends AppCompatActivity {
         // with the returned requestCode
         startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
     }
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+//
+//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+//
+//            if (resultCode == RESULT_OK) {
+//                // Get the cropped image and set it to your ImageView
+//                Uri croppedImageUri = result.getUri();
+//                Bitmap croppedBitmap = loadImageFromUri(croppedImageUri);
+//                IVPreviewImage.setImageBitmap(croppedBitmap);
+//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//                // Handle cropping error
+//                Exception error = result.getError();
+//                Toast.makeText(this, "Error cropping image: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        }
 
         if (resultCode == RESULT_OK) {
 
@@ -190,10 +215,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void flipHorizontal() {
+    public void flipHorizontal(float b) {
         if (originalBitmap != null) {
             Matrix matrix = new Matrix();
-            matrix.preScale(-1.0f, 1.0f); // Flip horizontally
+            matrix.preScale(b, 1.0f); // Flip horizontally
 
             flippedBitmap = Bitmap.createBitmap(originalBitmap, 0, 0, originalBitmap.getWidth(), originalBitmap.getHeight(), matrix, true);
             IVPreviewImage.setImageBitmap(flippedBitmap);
